@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Verbs Quiz (Odia Meaning)</title>
+<style>
+body {font-family: Arial; margin:0; background:#f4f6f9;}
+header {background:#4CAF50; color:white; padding:15px; text-align:center;}
+.container {padding:15px; max-width:600px; margin:auto;}
+.card {background:white; padding:15px; margin-bottom:10px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);} 
+button {padding:10px; margin:5px 0; width:100%; border:none; border-radius:8px; font-size:16px;}
+.correct {background:#4CAF50; color:white;}
+.wrong {background:#f44336; color:white;}
+.option {background:#eee;}
+.hidden {display:none;}
+.score {font-size:18px; font-weight:bold; text-align:center;}
+.set-btn {background:#2196F3; color:white;}
+.correct-item {color:#2e7d32;}
+.wrong-item {color:#c62828;}
+</style>
+</head>
+<body>
+<header>
+<h2>English Verbs Quiz (Odia Meaning)</h2>
+</header>
+
+<div class="container" id="setSelection"></div>
+<div class="container hidden" id="quizBox"></div>
+<div class="container hidden" id="resultBox"></div>
+
+<script>
+const verbs = [
+["Go","ଯିବା"],["Come","ଆସିବା"],["Eat","ଖାଇବା"],["Drink","ପିବା"],["Run","ଦୌଡିବା"],["Walk","ଚାଲିବା"],["Read","ପଢିବା"],["Write","ଲେଖିବା"],["Play","ଖେଳିବା"],["Sleep","ଶୋଇବା"],
+["Speak","କହିବା"],["Listen","ଶୁଣିବା"],["See","ଦେଖିବା"],["Hear","ଶୁଣିବା"],["Make","ତିଆରି କରିବା"],["Take","ନେବା"],["Give","ଦେବା"],["Find","ଖୋଜିବା"],["Think","ଭାବିବା"],["Know","ଜାଣିବା"],
+["Bring","ଆଣିବା"],["Buy","କିଣିବା"],["Sell","ବିକ୍ରି କରିବା"],["Open","ଖୋଲିବା"],["Close","ବନ୍ଦ କରିବା"],["Sit","ବସିବା"],["Stand","ଦାଢ଼ି ହେବା"],["Jump","ଲାଫ ମାରିବା"],["Climb","ଚଢ଼ିବା"],["Drive","ଗାଡ଼ି ଚଲାଇବା"],
+["Cook","ରନ୍ଧିବା"],["Wash","ଧୋଇବା"],["Clean","ପରିଷ୍କାର କରିବା"],["Cut","କାଟିବା"],["Break","ଭାଙ୍ଗିବା"],["Build","ନିର୍ମାଣ କରିବା"],["Draw","ଆଙ୍କିବା"],["Paint","ରଙ୍ଗ କରିବା"],["Sing","ଗାଇବା"],["Dance","ନାଚିବା"],
+["Learn","ଶିଖିବା"],["Teach","ପଢ଼େଇବା"],["Ask","ପଚାରିବା"],["Answer","ଉତ୍ତର ଦେବା"],["Call","ଡାକିବା"],["Wait","ଅପେକ୍ଷା କରିବା"],["Help","ସହାୟତା କରିବା"],["Try","ଚେଷ୍ଟା କରିବା"],["Use","ବ୍ୟବହାର କରିବା"],["Need","ଆବଶ୍ୟକ ହେବା"],
+["Want","ଚାହିଁବା"],["Like","ପସନ୍ଦ କରିବା"],["Love","ଭଲପାଇବା"],["Hate","ଘୃଣା କରିବା"],["Start","ଆରମ୍ଭ କରିବା"],["Finish","ସମାପ୍ତ କରିବା"],["Begin","ଆରମ୍ଭ କରିବା"],["End","ଶେଷ କରିବା"],["Win","ଜିତିବା"],["Lose","ହାରିବା"],
+["Send","ପଠାଇବା"],["Receive","ଗ୍ରହଣ କରିବା"],["Meet","ମିଶିବା"],["Visit","ଦେଖିବାକୁ ଯିବା"],["Travel","ଭ୍ରମଣ କରିବା"],["Stay","ରହିବା"],["Live","ବସିବା"],["Work","କାମ କରିବା"],["Rest","ବିଶ୍ରାମ କରିବା"],["Relax","ଆରାମ କରିବା"],
+["Grow","ବଢ଼ିବା"],["Plant","ରୋପିବା"],["Water","ପାଣି ଦେବା"],["Harvest","କଟିବା"],["Catch","ଧରିବା"],["Throw","ଫିଙ୍ଗିବା"],["Kick","ଲାତ ମାରିବା"],["Hit","ମାରିବା"],["Push","ଧକ୍କା ଦେବା"],["Pull","ଟାଣିବା"],
+["Carry","ବୋହିବା"],["Hold","ଧରି ରଖିବା"],["Drop","ଛାଡ଼ିଦେବା"],["Pick","ଉଠାଇବା"],["Choose","ବାଛିବା"],["Decide","ନିଷ୍ପତ୍ତି ନେବା"],["Plan","ଯୋଜନା କରିବା"],["Remember","ମନେ ରଖିବା"],["Forget","ଭୁଲିଯିବା"],["Understand","ବୁଝିବା"],
+["Explain","ବ୍ୟାଖ୍ୟା କରିବା"],["Describe","ବର୍ଣ୍ଣନା କରିବା"],["Compare","ତୁଳନା କରିବା"],["Check","ଯାଞ୍ଚ କରିବା"],["Test","ପରୀକ୍ଷା କରିବା"],["Solve","ସମାଧାନ କରିବା"],["Count","ଗଣନା କରିବା"],["Measure","ମାପିବା"],["Add","ଯୋଗ କରିବା"],["Subtract","ବିୟୋଗ କରିବା"],
+["Multiply","ଗୁଣ କରିବା"],["Divide","ଭାଗ କରିବା"],["Show","ଦେଖାଇବା"],["Hide","ଲୁଚାଇବା"],["Keep","ରଖିବା"],["Share","ଭାଗ କରିବା"],["Join","ଯୋଗ ହେବା"],["Leave","ଛାଡ଼ିଯିବା"],["Enter","ପ୍ରବେଶ କରିବା"],["Exit","ବାହାରିବା"],
+["Smile","ହସିବା"],["Laugh","ହସିବା"],["Cry","କାନ୍ଦିବା"],["Shout","ଚିତ୍କାର କରିବା"],["Whisper","ଧୀରେ କହିବା"],["Promise","ପ୍ରତିଜ୍ଞା କରିବା"],["Agree","ସମ୍ମତି ଦେବା"],["Disagree","ଅସମ୍ମତ ହେବା"],["Believe","ବିଶ୍ୱାସ କରିବା"],["Doubt","ସନ୍ଦେହ କରିବା"],
+["Save","ସଞ୍ଚୟ କରିବା"],["Spend","ଖର୍ଚ୍ଚ କରିବା"],["Earn","ଅର୍ଜନ କରିବା"],["Pay","ପଇସା ଦେବା"],["Borrow","ଋଣ ନେବା"],["Lend","ଋଣ ଦେବା"],["Fix","ଠିକ କରିବା"],["Repair","ମରାମତ କରିବା"],["Change","ପରିବର୍ତ୍ତନ କରିବା"],["Improve","ସୁଧାର କରିବା"],
+["Reduce","କମାଇବା"],["Increase","ବଢ଼ାଇବା"],["Create","ସୃଷ୍ଟି କରିବା"],["Destroy","ନଷ୍ଟ କରିବା"],["Protect","ରକ୍ଷା କରିବା"],["Attack","ଆକ୍ରମଣ କରିବା"],["Follow","ଅନୁସରଣ କରିବା"],["Lead","ନେତୃତ୍ୱ ଦେବା"],["Control","ନିୟନ୍ତ୍ରଣ କରିବା"],["Manage","ପରିଚାଳନା କରିବା"]
+];
+
+verbs.sort(()=>Math.random()-0.5);
+const sets=[];
+for(let i=0;i<8;i++){ sets.push(verbs.slice(i*25,(i+1)*25)); }
+
+const setDiv=document.getElementById("setSelection");
+const quizBox=document.getElementById("quizBox");
+const resultBox=document.getElementById("resultBox");
+
+sets.forEach((_,i)=>{
+ let btn=document.createElement("button");
+ btn.innerText="Start Set "+(i+1);
+ btn.className="set-btn";
+ btn.onclick=()=>startQuiz(i);
+ setDiv.appendChild(btn);
+});
+
+let currentSet,index,score,answers=[];
+
+function startQuiz(i){
+ currentSet=sets[i]; index=0; score=0; answers=[];
+ setDiv.classList.add("hidden");
+ quizBox.classList.remove("hidden");
+ showQuestion();
+}
+
+function showQuestion(){
+ let q=currentSet[index];
+ quizBox.innerHTML="";
+ let card=document.createElement("div");
+ card.className="card";
+ card.innerHTML=`<h3>${index+1}. ${q[0]}</h3>`;
+ 
+ let options=[q[1]];
+ while(options.length<4){
+   let rand=verbs[Math.floor(Math.random()*verbs.length)][1];
+   if(!options.includes(rand)) options.push(rand);
+ }
+ options.sort(()=>Math.random()-0.5);
+
+ options.forEach(opt=>{
+   let btn=document.createElement("button");
+   btn.innerText=opt;
+   btn.className="option";
+   btn.onclick=()=>checkAnswer(btn,opt,q);
+   card.appendChild(btn);
+ });
+ quizBox.appendChild(card);
+}
+
+function checkAnswer(btn,selected,q){
+ let correct=q[1];
+ let buttons=document.querySelectorAll(".option");
+ buttons.forEach(b=>{
+   // remove default style
+   b.classList.remove("option");
+
+   // correct answer
+   if(b.innerText===correct){
+     b.classList.add("correct");
+   }
+
+   // wrong selected
+   if(b===btn && selected!==correct){
+     b.classList.add("wrong");
+   }
+
+   b.disabled=true;
+ });
+
+ let isCorrect = selected===correct;
+ if(isCorrect) score++;
+
+ answers.push({question:q[0], correct:correct, selected:selected, isCorrect:isCorrect});
+
+ setTimeout(()=>{
+   index++;
+   if(index<currentSet.length) showQuestion();
+   else showResult();
+ },1000);
+}
+
+function showResult(){
+ quizBox.classList.add("hidden");
+ resultBox.classList.remove("hidden");
+
+ let html=`<div class="card score">Score: ${score}/25</div>`;
+
+ html+=`<div class="card"><h3>Correct Answers</h3>`;
+ answers.filter(a=>a.isCorrect).forEach(a=>{
+   html+=`<div class="correct-item">✔ ${a.question} - ${a.correct}</div>`;
+ });
+ html+=`</div>`;
+
+ html+=`<div class="card"><h3>Wrong Answers</h3>`;
+ answers.filter(a=>!a.isCorrect).forEach(a=>{
+   html+=`<div class="wrong-item">✘ ${a.question} → Your: ${a.selected} | Correct: ${a.correct}</div>`;
+ });
+ html+=`</div>`;
+
+ html+=`<button onclick="location.reload()">Play Again</button>`;
+
+ resultBox.innerHTML=html;
+}
+</script>
+</body>
+</html>
